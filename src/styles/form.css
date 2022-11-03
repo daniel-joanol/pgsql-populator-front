@@ -1,0 +1,18 @@
+.mainBox {
+    text-align: center;
+    padding: 5%;
+}
+
+input:focus {
+    outline: 2px solid #26b0fa;
+    box-shadow: 0 0 10px #26b0fa;
+}
+
+input {
+    border-radius: 5px;
+    border-style: none;
+}
+
+label {
+    margin: 15px;
+}
