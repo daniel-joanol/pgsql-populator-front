@@ -7,75 +7,63 @@ import TYPE from '../models/type.enum.js';
 const Form = () => {
 
     const [tableName, setTableName] = useState('');
-    const initialValue = new GenericField(null, TYPE.CHAR);
-    const [values, setValues] = useState([initialValue]);
+    const [values, setValues] = useState([new GenericField(null, TYPE.CHAR, null, null, null, null, null)]);
     const [fieldN, setFieldN] = useState(1);
     const types = Object.keys(TYPE);
     const varcharTypes = Object.keys(VARCHAR_TYPE);
     const varcharType = varcharTypes[0];
-    let newValues = [''];
 
     const updateFieldN = (e) => {
         setFieldN(e.target.value);
-        newValues = [values[0]];
+        let newValues = [values[0]];
 
         for (let i = 1; i < e.target.value; i++) {
-            if (i <= values.length) {
+            if (i < values.length) {
                 newValues.push(values[i]);
             } else {
-                newValues.push(initialValue);
+                newValues.push(new GenericField(null, TYPE.CHAR, null, null, null, null, null));
             }
         }
-
-        console.log(newValues);
+        
         setValues(newValues);
     }
 
-    const updateName = (e, i) => {
+    const updateValues = (e, i) => {
         let newValue = values[i];
-        newValue.name = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
 
-    const updateType = (e, i) => {
-        let newValue = values[i];
-        newValue.type = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
+        switch (e.target.name) {
+            case 'field_name':
+                newValue.name = e.target.value;
+                break;
+            
+            case 'field_type':
+                newValue.type = e.target.value;
+                break;
 
-    const updateItems = (e, i) => {
-        let newValue = values[i];
-        newValue.items = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
+            case 'items':
+                newValue.items = e.target.value;
+                break;
 
-    const updateVarcharType = (e, i) => {
-        let newValue = values[i];
-        newValue.varcharType = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
+            case 'varchar_type':
+                newValue.varcharType = e.target.value;
+                break;
 
-    const updateLength = (e, i) => {
-        let newValue = values[i];
-        newValue.length = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
+            case 'length':
+                newValue.length = e.target.value;
+                break;
+            
+            case 'start_date':
+                newValue.startDate = e.target.value;
+                break;
 
-    const updateStartDate = (e, i) => {
-        let newValue = values[i];
-        newValue.startDate = e.target.value;
-        values[i] = newValue;
-        setValues(values);
-    }
+            case 'end_date':
+                newValue.endDate = e.target.value;
+                break;
+            
+            default:
+                break;
+        }
 
-    const updateEndDate = (e, i) => {
-        let newValue = values[i];
-        newValue.endDate = e.target.value;
         values[i] = newValue;
         setValues(values);
     }
@@ -100,11 +88,11 @@ const Form = () => {
                                 return <tr>
                                     <td>
                                         <label>Name</label>
-                                        <input key={i} type='text' name='field_name' required={true} onChange={(e) => updateName(e, i)}></input>
+                                        <input key={i} type='text' name='field_name' required={true} onChange={(e) => updateValues(e, i)}></input>
                                     </td>
                                     <td>
                                         <label>Type</label>
-                                        <select key={i} name='field_type' onChange={(e) => updateType(e, i)}>
+                                        <select key={i} name='field_type' onChange={(e) => updateValues(e, i)}>
                                             {types.map((t, j) => {
                                                 return <option key={j}>
                                                     {t}
@@ -118,7 +106,7 @@ const Form = () => {
                                             <div>
                                                 <label>Items</label>
                                                 <input key={i} type='text' size='100' name='items' placeholder='Use "," between items' required={true}
-                                                    onChange={(e) => updateItems(e, i)}></input>
+                                                    onChange={(e) => updateValues(e, i)}></input>
                                             </div>
                                         }
 
@@ -126,7 +114,7 @@ const Form = () => {
                                             (values[i].type === 'TEXT' || values[i].type === 'VARCHAR') &&
                                             <div>
                                                 <label>Varchar type</label>
-                                                <select key={i} name='varchar_type' value={varcharType} onChange={(e) => updateVarcharType(e, i)}>
+                                                <select key={i} name='varchar_type' value={varcharType} onChange={(e) => updateValues(e, i)}>
                                                     {varcharTypes.map((t, j) => {
                                                         return <option key={j} >
                                                             {t}
@@ -141,18 +129,18 @@ const Form = () => {
                                             <div>
                                                 <label>Start date</label>
                                                 <input key={i} name='start_date' type='text' size='20' placeHolder='Example 2022-10-01T10:00:00' required={true}
-                                                    onChange={(e) => updateStartDate(e, i)}></input>
+                                                    onChange={(e) => updateValues(e, i)}></input>
                                             </div>
                                         }
 
                                     </td>
                                     <td>
                                         {
-                                            (values[i].type == TYPE.TEXT || values[i].type === TYPE.VARCHAR) &&
+                                            (values[i].type === TYPE.TEXT || values[i].type === TYPE.VARCHAR) &&
                                             <div>
                                                 <label>Length</label>
                                                 <input key={i} type='number' name='length' min='1' max='100' placeholder='1 to 100' required={true}
-                                                    size='5' onChange={(e) => updateLength(e, i)}></input>
+                                                    size='5' onChange={(e) => updateValues(e, i)}></input>
                                             </div>
                                         }
 
@@ -161,7 +149,7 @@ const Form = () => {
                                             <div>
                                                 <label>End date</label>
                                                 <input key={i} name='end_date' type='text' size='20' placeHolder='Example 2022-10-31T10:00:00' required={true}
-                                                    onChange={(e) => updateEndDate(e, i)}></input>
+                                                    onChange={(e) => updateValues(e, i)}></input>
                                             </div>
                                         }
                                     </td>
