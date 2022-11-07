@@ -3,8 +3,6 @@ import '../styles/form.css';
 import { GenericField } from '../models/genericField';
 import FieldComponent from './field';
 import TYPE from '../models/type.enum.js';
-import minus from '../images/minus-button.png'
-import plus from '../images/add-button.png'
 
 const Form = () => {
 
@@ -14,11 +12,12 @@ const Form = () => {
     const [records, setRecords] = useState(1);
     const [control, setControl] = useState(false);
 
-    const updateFieldN = (e) => {
-        setFieldN(e.target.value);
+    const updateFieldN = (n) => {
+        let count = fieldN +n;
+        setFieldN(count);
         let newValues = [values[0]];
 
-        for (let i = 1; i < e.target.value; i++) {
+        for (let i = 1; i < count; i++) {
             if (i < values.length) {
                 newValues.push(values[i]);
             } else {
@@ -95,32 +94,29 @@ const Form = () => {
                     </tbody>
                 </table>
 
-                <div class='container text-center'>
-                    <div class='row'>
-                        <div class='col'>
+                <div className='container text-center'>
+                    <div className='row'>
+                        <div className='col-2 text-left'>
                             <label>Records</label>
                             <input size='1' type='number' min='1' placeholder='1' value={records} onChange={(e) => setRecords(e.target.value)}></input>
                         </div>
 
-                        <div class='col'>
-                            <button type='send' class='btn btn-dark'>Generate query</button>
+                        <div className='col-8'>
+                            <button type='send' className='btn btn-dark'>Generate query</button>
                         </div>
 
-                        <div class='col'>
-                            <img source={minus} alt='' />
-                            <img source={plus} alt='' />
+                        <div className='col-2 row'>
+                            <div className='button' id='minus' onClick={ () => updateFieldN(-1)}/>
+                            <div className='button' id='plus' onClick={ () => updateFieldN(+1)}/>
                         </div>
                     </div>
                 </div>
 
             </form>
 
-            <label>Number of fields</label>
-                            <input size='1' type='number' min='1' placeholder='1' value={fieldN} onChange={(e) => updateFieldN(e)}></input> 
-
-            <div>
-                <a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icons created by Anggara - Flaticon</a>
-                <a href="https://www.flaticon.com/free-icons/minus" title="minus icons">Minus icons created by inkubators - Flaticon</a>
+            <div className='fixed-bottom'>
+                <p><a href="https://www.flaticon.com/free-icons/plus" target='_blank' rel='noreferrer'>Plus icons created by Anggara - Flaticon</a></p>
+                <p><a href="https://www.flaticon.com/free-icons/minus" target='_blank' rel='noreferrer'> Minus icons created by inkubators - Flaticon</a></p>
             </div>
         </div>
 
