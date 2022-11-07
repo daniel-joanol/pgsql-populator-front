@@ -106,7 +106,10 @@ const Form = () => {
                         </div>
 
                         <div className='col-2 row'>
-                            <div className='button' id='minus' onClick={ () => updateFieldN(-1)}/>
+                            {
+                                fieldN > 1 && <div className='button' id='minus' onClick={ () => updateFieldN(-1)}/>
+                            }
+                            
                             <div className='button' id='plus' onClick={ () => updateFieldN(+1)}/>
                         </div>
                     </div>
@@ -114,7 +117,7 @@ const Form = () => {
 
             </form>
 
-            <div className='fixed-bottom'>
+            <div id='bottom'>
                 <p><a href="https://www.flaticon.com/free-icons/plus" target='_blank' rel='noreferrer'>Plus icons created by Anggara - Flaticon</a></p>
                 <p><a href="https://www.flaticon.com/free-icons/minus" target='_blank' rel='noreferrer'> Minus icons created by inkubators - Flaticon</a></p>
             </div>

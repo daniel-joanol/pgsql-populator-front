@@ -42,3 +42,11 @@ label {
     background-image: url(../images/add-button.png);
     text-align: right;
 }
+
+#bottom {
+    position: fixed;
+    bottom: 0;
+    margin-left: 0px;
+    padding-left: 0px;
+    text-align: left;
+}
