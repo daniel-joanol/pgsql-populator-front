@@ -1,6 +1,8 @@
 .mainBox {
     text-align: center;
-    padding: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 0px;
 }
 
 input:focus {
@@ -15,4 +17,8 @@ input {
 
 label {
     margin: 15px;
+}
+
+#table_name {
+    margin: 20px;
 }
