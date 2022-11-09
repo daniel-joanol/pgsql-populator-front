@@ -3,6 +3,7 @@ import '../styles/form.css';
 import { GenericField } from '../models/genericField';
 import FieldComponent from './field';
 import TYPE from '../models/type.enum.js';
+import { getBody } from '../utils/getBody';
 
 const Form = () => {
 
@@ -11,9 +12,10 @@ const Form = () => {
     const [fieldN, setFieldN] = useState(1);
     const [records, setRecords] = useState(1);
     const [control, setControl] = useState(false);
+    const [query, setQuery] = useState('');
 
     const updateFieldN = (n) => {
-        let count = fieldN +n;
+        let count = fieldN + n;
         setFieldN(count);
         let newValues = [values[0]];
 
@@ -69,36 +71,52 @@ const Form = () => {
         setValues(newValues);
     }
 
+    const postQuery = async () => {
+
+        let requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: getBody(values)
+        };
+
+        const response = await fetch('http://localhost:8080/api/v1/populator/?recordsNumber=' + records +
+                '&tableName=' + tableName, requestOptions)
+            .then(response => response.text())
+            //.then(data => data.split('\n'))
+            .then(data => setQuery(data));
+
+        console.log(query);
+    }
+
     return (
         <div className='mainBox'>
 
             <form name='sqlOptions' method='post'
                 onSubmit={(e) => {
                     e.preventDefault();
-                    console.log(tableName);
-                    console.log(values);
+                    postQuery(values);
                 }}>
 
                 <div id='table_name'>
                     <label>Table name</label>
-                    <input type='text' name='table_name' required={true} onChange={(e) => setTableName(e.target.value)}></input>
+                    <input type='text' name='table_name' required={true} 
+                        autoComplete='off' onChange={(e) => setTableName(e.target.value)}></input>
                 </div>
 
-                <table className='table table-striped'>
-                    <tbody>
-                        {
-                            values.map((v, i) => {
-                                return <FieldComponent key={i} field={v} i={i} update={updateValues} />
-                            })
-                        }
-                    </tbody>
-                </table>
+                <div className='container text-center' id='box'>
+                    {
+                        values.map((v, i) => {
+                            return <FieldComponent key={i} field={v} i={i} update={updateValues} />
+                        })
+                    }
+                </div>
 
                 <div className='container text-center'>
                     <div className='row'>
                         <div className='col-2 text-left'>
                             <label>Records</label>
-                            <input size='1' type='number' min='1' placeholder='1' value={records} onChange={(e) => setRecords(e.target.value)}></input>
+                            <input size='1' type='number' min='1' max='100' placeholder='1' value={records} 
+                                    onChange={(e) => setRecords(e.target.value)}></input>
                         </div>
 
                         <div className='col-8'>
@@ -107,20 +125,23 @@ const Form = () => {
 
                         <div className='col-2 row'>
                             {
-                                fieldN > 1 && <div className='button' id='minus' onClick={ () => updateFieldN(-1)}/>
+                                fieldN > 1 && <div className='button' id='minus' onClick={() => updateFieldN(-1)} />
                             }
-                            
-                            <div className='button' id='plus' onClick={ () => updateFieldN(+1)}/>
+
+                            <div className='button' id='plus' onClick={() => updateFieldN(+1)} />
                         </div>
                     </div>
                 </div>
 
             </form>
 
-            <div id='bottom'>
-                <p><a href="https://www.flaticon.com/free-icons/plus" target='_blank' rel='noreferrer'>Plus icons created by Anggara - Flaticon</a></p>
-                <p><a href="https://www.flaticon.com/free-icons/minus" target='_blank' rel='noreferrer'> Minus icons created by inkubators - Flaticon</a></p>
-            </div>
+            {
+                query !== '' &&
+                <div id='query'>
+                    {query}
+                </div>
+            }
+
         </div>
 
     );

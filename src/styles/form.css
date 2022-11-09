@@ -24,6 +24,11 @@ label {
     margin: 20px;
 }
 
+.container {
+    margin-top: 20px;
+    padding: 0px;
+}
+
 .button {
     height: 30px;
     width: 30px;
@@ -43,10 +48,13 @@ label {
     text-align: right;
 }
 
-#bottom {
-    position: fixed;
-    bottom: 0;
-    margin-left: 0px;
-    padding-left: 0px;
-    text-align: left;
+#query {
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: white;
+    border: 5px solid #92bdd4;
+    padding: 10px;
+    width: 85%;
+    text-align: center;
 }
