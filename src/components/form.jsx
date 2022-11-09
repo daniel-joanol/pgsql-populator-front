@@ -12,7 +12,7 @@ const Form = () => {
     const [fieldN, setFieldN] = useState(1);
     const [records, setRecords] = useState(1);
     const [control, setControl] = useState(false);
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState(null);
 
     const updateFieldN = (n) => {
         let count = fieldN + n;
@@ -44,7 +44,7 @@ const Form = () => {
                 break;
 
             case 'items':
-                newValues[i].items = e.target.value;
+                newValues[i].items = e.target.value.toString().split(',');
                 break;
 
             case 'varchar_type':
@@ -82,10 +82,8 @@ const Form = () => {
         const response = await fetch('http://localhost:8080/api/v1/populator/?recordsNumber=' + records +
                 '&tableName=' + tableName, requestOptions)
             .then(response => response.text())
-            //.then(data => data.split('\n'))
+            .then(data => data.split('\n'))
             .then(data => setQuery(data));
-
-        console.log(query);
     }
 
     return (
@@ -136,9 +134,13 @@ const Form = () => {
             </form>
 
             {
-                query !== '' &&
+                query !== null &&
                 <div id='query'>
-                    {query}
+                    {
+                        query.map((line, i) => 
+                            <p key={i}>{line}</p>
+                        )
+                    }
                 </div>
             }
 

@@ -9,7 +9,6 @@ const FieldComponent = ({ field, i, update }) => {
 
     const types = Object.keys(TYPE);
     const varcharTypes = Object.keys(VARCHAR_TYPE);
-    const varcharType = varcharTypes[0];
 
     return (
 
@@ -38,7 +37,7 @@ const FieldComponent = ({ field, i, update }) => {
                         <div>
                             <label>Items</label>
                             <input key={i} type='text' size='28' name='items' autoComplete='off'
-                                placeholder='Use "," between items' required={true} onChange={(e) => update(e, i)}></input>
+                                placeholder='"item1","item2", "etc"' required={true} onChange={(e) => update(e, i)}></input>
                         </div>
                     }
 
