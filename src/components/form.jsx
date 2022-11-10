@@ -80,7 +80,7 @@ const Form = () => {
         };
 
         let body = '';
-        const response = await fetch('http://localhost:8080/api/v1/populator/?recordsNumber=' + records +
+        const response = await fetch('https://psqlpopulator.herokuapp.com/api/v1/populator/?recordsNumber=' + records +
                 '&tableName=' + tableName, requestOptions)
             .then(response => response.text())
             .then(data => data.split('\n'))
