@@ -79,11 +79,19 @@ const Form = () => {
             body: getBody(values)
         };
 
+        let body = '';
         const response = await fetch('http://localhost:8080/api/v1/populator/?recordsNumber=' + records +
                 '&tableName=' + tableName, requestOptions)
             .then(response => response.text())
             .then(data => data.split('\n'))
-            .then(data => setQuery(data));
+            .then(data => body = data);
+
+        if (body[0].charAt(0) === 'I') {
+            setQuery(body);
+        } else {
+            setQuery(['Sorry, something went wrong. Please, let me know on joanoldaniel@gmail.com'])
+        }
+        
     }
 
     return (
